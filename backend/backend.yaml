@@ -19,6 +19,8 @@ spec:
         app: snake-bd-app
         tier: app
     spec:
+      imagePullSecrets:
+      - name: gcp-reg-cred
       containers:
       - name: snake-backend-container
         # Updated to your Google Artifact Registry path

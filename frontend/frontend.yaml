@@ -22,6 +22,8 @@ spec:
         app: snake-fd-app
         tier: app
     spec:
+      imagePullSecrets:
+      - name: gcp-reg-cred
       containers:
       - name: snake-frontend-container
         # Correctly indented under the container name
