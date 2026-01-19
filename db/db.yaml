@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: snake-db-deployment
+  namespace: database
+  labels:
+    kubernetes.io/metadata.name: database
+    kubernetes.io/metadata.namespace: database
+    kubernetes.io/component: db
+    kubernetes.io/tier: app
+spec:
+  serviceName: snake-db-service
+  replicas: 1
+  selector:
+    matchLabels:
+      kubernetes.io/metadata.name: database
+      kubernetes.io/metadata.namespace: database
+      kubernetes.io/component: db
+      kubernetes.io/tier: app
+  template:
+    metadata:
+      labels:
+        kubernetes.io/metadata.name: database
+        kubernetes.io/metadata.namespace: database
+        kubernetes.io/component: db
+        kubernetes.io/tier: app
+    spec:
+      containers:
+      - name: snake-db-container
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: snake
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: gce-pd-standard
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

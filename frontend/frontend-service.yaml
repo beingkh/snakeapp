@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: snake-fd-service
+  namespace: frontend
+spec:
+  selector:
+    kubernetes.io/part-of: snakegame
+    kubernetes.io/component: ui
+    kubernetes.io/app: snake-fd-app
+    kubernetes.io/tier: app
+  ports:
+  - port: 80

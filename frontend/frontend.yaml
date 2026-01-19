@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snake-fd-deployment
+  namespace: frontend
+  labels:
+    kubernetes.io/part-of: snakegame
+    kubernetes.io/component: ui
+    kubernetes.io/app: snake-fd-app
+    kubernetes.io/tier: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      kubernetes.io/component: ui
+      kubernetes.io/app: snake-fd-app
+      kubernetes.io/tier: app
+  template:
+    metadata:
+      labels:
+        kubernetes.io/metadata.namespace: frontend
+        kubernetes.io/component: ui
+        kubernetes.io/tier: app
+    spec:
+      containers:
+      - name: snake-frontend-container
+      image: xgoods/snake-fd:5.0
+      ports:
+      - containerPort: 80

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-traffic-from-frontend-to-backend
+  namespace: backend
+spec:
+  podSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: backend
+      kubernetes.io/metadata.namespace: backend
+      kubernetes.io/component: logic
+      kubernetes.io/tier: app
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.namespace: frontend
+      podSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: frontend
+          kubernetes.io/metadata.namespace: frontend
+          kubernetes.io/component: ui
+          kubernetes.io/tier: app
+    ports:
+    - protocol: TCP
+      port: 3000

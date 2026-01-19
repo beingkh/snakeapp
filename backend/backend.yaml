@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snake-bd-deployment
+  namespace: backend
+  labels:
+    kubernetes.io/part-of: snakegame
+    kubernetes.io/component: logic
+    kubernetes.io/app: snake-bd-app
+    kubernetes.io/tier: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      kubernetes.io/part-of: snakegame
+      kubernetes.io/component: logic
+      kubernetes.io/app: snake-bd-app
+      kubernetes.io/tier: app
+  template:
+    metadata:
+      labels:
+        kubernetes.io/part-of: snakegame
+        kubernetes.io/component: logic
+        kubernetes.io/app: snake-bd-app
+        kubernetes.io/tier: app
+    spec:
+      containers:
+      - name: snake-backend-container
+        image: xgoods/snake-bd:5.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_HOST
+          value: snakedb-0.snakedb.database.svc.cluster.local
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASS
+          value: postgres
+        - name: DB_NAME
+          value: snakedb
