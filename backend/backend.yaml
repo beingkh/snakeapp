@@ -4,34 +4,31 @@ metadata:
   name: snake-bd-deployment
   namespace: backend
   labels:
-    kubernetes.io/part-of: snakegame
-    kubernetes.io/component: logic
-    kubernetes.io/app: snake-bd-app
-    kubernetes.io/tier: app
+    component: logic
+    tier: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      kubernetes.io/part-of: snakegame
-      kubernetes.io/component: logic
-      kubernetes.io/app: snake-bd-app
-      kubernetes.io/tier: app
+      component: logic
+      app: snake-bd-app
   template:
     metadata:
       labels:
-        kubernetes.io/part-of: snakegame
-        kubernetes.io/component: logic
-        kubernetes.io/app: snake-bd-app
-        kubernetes.io/tier: app
+        component: logic
+        app: snake-bd-app
+        tier: app
     spec:
       containers:
       - name: snake-backend-container
-        image: xgoods/snake-bd:5.0
+        # Updated to your Google Artifact Registry path
+        image: us-central1-docker.pkg.dev/xgoods-in/snake-app/snake-bd:5.0
         ports:
         - containerPort: 3000
         env:
         - name: DB_HOST
-          value: snakedb-0.snakedb.database.svc.cluster.local
+          # Ensure this matches your DB service name and namespace
+          value: snakedb-0.snakedb.db.svc.cluster.local
         - name: DB_USER
           value: postgres
         - name: DB_PASS

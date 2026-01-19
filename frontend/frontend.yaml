@@ -4,26 +4,27 @@ metadata:
   name: snake-fd-deployment
   namespace: frontend
   labels:
-    kubernetes.io/part-of: snakegame
-    kubernetes.io/component: ui
-    kubernetes.io/app: snake-fd-app
-    kubernetes.io/tier: app
+    component: ui
+    tier: app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      kubernetes.io/component: ui
-      kubernetes.io/app: snake-fd-app
-      kubernetes.io/tier: app
+      # These 3 MUST match the template labels below
+      component: ui
+      app: snake-fd-app
+      tier: app
   template:
     metadata:
       labels:
-        kubernetes.io/metadata.namespace: frontend
-        kubernetes.io/component: ui
-        kubernetes.io/tier: app
+        # These are the labels applied to the actual Pods
+        component: ui
+        app: snake-fd-app
+        tier: app
     spec:
       containers:
       - name: snake-frontend-container
-      image: xgoods/snake-fd:5.0
-      ports:
-      - containerPort: 80
+        # Correctly indented under the container name
+        image: us-central1-docker.pkg.dev/xgoods-in/snake-app/snake-fd:5.0
+        ports:
+        - containerPort: 80
